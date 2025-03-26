@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- [LOCK START] 基础头 -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- [SEO LOCK] 后续扩展区 -->
+  <meta name="description" content="Gavyn Games - Premium Game Directory">
+  <title>Gavyn Games | Game Directory</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* [COLOR LOCK] 苹果色系定义 */
+    :root {
+      --apple-light: #f5f5f7;
+      --apple-dark: #1d1d1f;
+      --apple-blue: #2997ff;
+    }
+  </style>
+  <!-- [LOCK END] -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          lineClamp: {
+            3: '3',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- [LOCK] 在<head>末尾添加 -->
+  <!-- [SEO SECTION] -->
+  <meta name="description" content="Gavyn Games offers curated premium web games with an immersive instant play experience.">
+  <link rel="canonical" href="https://gavyngames.info">
+  <meta property="og:title" content="Gavyn Games | Game Directory">
+  <meta property="og:description" content="Curated premium web games with an immersive instant play experience">
+  <meta property="og:url" content="https://gavyngames.info">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://gavyngames.info/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gavyn Games | Game Directory">
+  <meta name="twitter:description" content="Curated premium web games with an immersive instant play experience">
+  <meta name="twitter:image" content="https://gavyngames.info/images/twitter-card.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Gavyn Games",
+    "url": "https://gavyngames.info",
+    "description": "Premium web game directory platform",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Game",
+          "name": "2048",
+          "description": "Classic number merging game, combine identical numbers by sliding to reach 2048.",
+          "genre": "Puzzle",
+          "url": "https://gavyngames.info/games/2048"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Game",
+          "name": "Ninja Jump",
+          "description": "Fast-paced action game where you control a ninja character jumping over obstacles.",
+          "genre": "Action",
+          "url": "https://gavyngames.info/games/ninja-jump"
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body class="bg-[var(--apple-light)] text-[var(--apple-dark)] font-[-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif]">
+  <!-- [LOCK] 主体容器 -->
+  <main class="container mx-auto px-4 md:px-8 lg:px-16">
+    <!-- [MODIFIABLE] 内容区 -->
+    <section id="nav-bar" class="py-6 sticky top-0 bg-[var(--apple-light)] z-10">
+      <div class="flex justify-between items-center">
+        <h1 class="text-xl font-bold md:text-2xl">Gavyn Games</h1>
+        <nav class="hidden md:block">
+          <ul class="flex space-x-6">
+            <li><a href="#" class="hover:text-[var(--apple-blue)]">Popular</a></li>
+            <li><a href="#" class="hover:text-[var(--apple-blue)]">Categories</a></li>
+            <li><a href="#" class="hover:text-[var(--apple-blue)]">New Releases</a></li>
+          </ul>
+        </nav>
+        <button class="md:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+      <div class="md:hidden mt-4 hidden" id="mobile-menu">
+        <ul class="flex flex-col space-y-2">
+          <li><a href="#" class="block py-2 hover:text-[var(--apple-blue)]">Popular</a></li>
+          <li><a href="#" class="block py-2 hover:text-[var(--apple-blue)]">Categories</a></li>
+          <li><a href="#" class="block py-2 hover:text-[var(--apple-blue)]">New Releases</a></li>
+        </ul>
+      </div>
+      
+      <!-- [MODIFIABLE START] 在#nav-bar内添加 -->
+      <nav class="flex overflow-x-auto pb-2 space-x-4 mt-4">
+        <button class="px-4 py-2 rounded-full bg-[var(--apple-blue)] text-white whitespace-nowrap">All</button>
+        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Action</button>
+        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Puzzle</button>
+        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Strategy</button>
+        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">RPG</button>
+        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Simulation</button>
+        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Casual</button>
+      </nav>
+    </section>
+    
+    <section id="game-grid" class="grid grid-cols-2 gap-2 p-2 md:grid-cols-4 md:gap-4 md:p-4 pb-8">
+      <!-- [MODIFIABLE] 在#game-grid内添加 -->
+      <div class="relative group cursor-pointer" onclick="showGameModal('sprunki', 'Adventure', 'Join Sprunki on an exciting adventure through colorful worlds. Overcome obstacles, collect items, and discover hidden secrets in this engaging platformer game.')">
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="aspect-video bg-gray-100 rounded-t-xl flex items-center justify-center bg-[#3498db] overflow-hidden">
+            <img src="https://cdn.sprunki.com/img/incredibox-sprunki.webp" alt="Sprunki" class="w-full h-full object-cover" loading="lazy" decoding="async">
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Sprunki</h3>
+            <span class="text-[var(--apple-blue)] text-sm">Adventure</span>
+            <p class="text-gray-600 mt-2 line-clamp-3">Join Sprunki on an exciting adventure through colorful worlds. Overcome obstacles and discover hidden secrets.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="relative group cursor-pointer" onclick="showGameModal('sprunki-phase-3', 'Adventure', 'Sprunki is back with Phase 3! New levels, enhanced gameplay, and more challenging obstacles in this sequel to the popular platformer. Discover new power-ups and special abilities as you progress through beautifully designed levels.')">
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="aspect-video bg-gray-100 rounded-t-xl flex items-center justify-center bg-[#9b59b6] overflow-hidden">
+            <img src="https://cdn.sprunki.com/img/sprunki-phase-3.webp" alt="Sprunki Phase 3" class="w-full h-full object-cover" loading="lazy" decoding="async">
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Sprunki Phase 3</h3>
+            <span class="text-[var(--apple-blue)] text-sm">Adventure</span>
+            <p class="text-gray-600 mt-2 line-clamp-3">New levels, enhanced gameplay, and more challenging obstacles in this sequel to the popular Sprunki platformer.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="relative group cursor-pointer" onclick="showGameModal('sprunki-roblox', 'Adventure', 'Experience Sprunki in the Roblox universe! This special edition brings your favorite character into a blocky 3D world with multiplayer capabilities. Build, explore, and embark on adventures with friends in this exciting crossover.')">
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="aspect-video bg-gray-100 rounded-t-xl flex items-center justify-center bg-[#e74c3c] overflow-hidden">
+            <img src="https://cdn.sprunki.com/img/sprunki-roblox.webp" alt="Sprunki Roblox" class="w-full h-full object-cover" loading="lazy" decoding="async">
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Sprunki Roblox</h3>
+            <span class="text-[var(--apple-blue)] text-sm">Adventure</span>
+            <p class="text-gray-600 mt-2 line-clamp-3">Experience Sprunki in the Roblox universe! Build, explore, and embark on adventures with friends in this exciting crossover.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="relative group cursor-pointer" onclick="showGameModal('2048', 'Puzzle', 'Classic number merging game. Combine identical numbers by sliding to reach 2048. Simple to learn but challenging to master.')">
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="aspect-video bg-gray-100 rounded-t-xl flex items-center justify-center">
+            <span class="text-3xl font-bold text-[var(--apple-blue)]">2048</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">2048</h3>
+            <span class="text-[var(--apple-blue)] text-sm">Puzzle</span>
+            <p class="text-gray-600 mt-2 line-clamp-3">Classic number merging game. Combine identical numbers by sliding to reach 2048.</p>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+
+    <!-- [MODIFIABLE] 在</main>前添加悬浮层 -->
+    <div id="game-modal" class="hidden fixed inset-0 bg-black/50 z-40 transition-all duration-300 ease-in-out">
+      <div class="bg-white rounded-xl w-full md:w-4/5 h-[80vh] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl transition-all duration-300 ease-in-out opacity-0 scale-95" id="modal-content">
+        <button onclick="closeGameModal()" class="absolute top-4 right-4 z-50 bg-white/80 rounded-full p-3 shadow-md hover:bg-white transition-all duration-300 w-12 h-12 flex items-center justify-center min-w-[44px] min-h-[44px]">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <iframe 
+          class="w-full h-[60vh] border-none rounded-t-xl bg-gray-100" 
+          id="game-frame"
+          loading="lazy"
+          decoding="async"
+          frameborder="0"
+          allow="autoplay; fullscreen"
+          title="Game Content"
+        ></iframe>
+        <div class="p-6 h-[40vh] max-h-calc(40vh - 64px) overflow-y-auto touch-pan-y overscroll-contain">
+          <div class="flex items-center gap-2 mb-2">
+            <h2 class="text-2xl font-bold" id="modal-title">Game Title</h2>
+            <span class="text-[var(--apple-blue)] text-sm px-3 py-1 rounded-full bg-[var(--apple-blue)]/10" id="modal-category">Category</span>
+          </div>
+          <p class="text-gray-700" id="modal-description">Loading game description...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // 移动端菜单交互
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuButton = document.querySelector('#nav-bar button');
+      const mobileMenu = document.querySelector('#mobile-menu');
+      
+      menuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+      
+      // 初始化暗黑模式检测
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark-mode');
+      }
+      
+      // 监听系统暗黑模式变化
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (e.matches) {
+          document.body.classList.add('dark-mode');
+        } else {
+          document.body.classList.remove('dark-mode');
+        }
+      });
+    });
+
+    // [LOCK] 增强版加载逻辑
+    function showGameModal(gameId, category, description) {
+      const modal = document.getElementById('game-modal');
+      const modalContent = document.getElementById('modal-content');
+      const iframe = document.getElementById('game-frame');
+      
+      // 设置内容
+      document.getElementById('modal-title').textContent = gameId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      document.getElementById('modal-category').textContent = category;
+      document.getElementById('modal-description').textContent = description;
+      
+      // 显示模态框
+      modal.classList.remove('hidden');
+      
+      // 延迟加载iframe内容
+      setTimeout(() => {
+        // 特定游戏使用指定URL
+        if (gameId === '2048') {
+          iframe.src = 'https://cloud.onlinegames.io/games/2025/unity/monster-survivors/index-og.html';
+        } else if (gameId === 'sprunki') {
+          iframe.src = 'https://game.sprunki.com/game.sprunki.html';
+        } else if (gameId === 'sprunki-phase-3') {
+          iframe.src = 'https://iframegame.com/embed/sprunki-phase-3/index.html';
+        } else if (gameId === 'sprunki-roblox') {
+          iframe.src = 'https://game.sprunki.com/sprunkiroblox.html';
+        } else {
+          iframe.src = `https://cdn.games/${gameId}/index.html`;
+        }
+      }, 300);
+      
+      // 添加动画效果
+      setTimeout(() => {
+        modalContent.classList.remove('opacity-0', 'scale-95');
+        modalContent.classList.add('opacity-100', 'scale-100');
+      }, 10);
+      
+      // 阻止body滚动，但保持模态内容可滚动
+      document.body.style.overflow = 'hidden';
+      
+      // 动态更新结构化数据
+      const schemaScript = document.querySelector('script[type="application/ld+json"]:last-of-type');
+      const schemaData = JSON.parse(schemaScript.textContent);
+      
+      // 检查游戏是否已存在于列表中
+      const existingIndex = schemaData.itemListElement.findIndex(item => 
+        item.item && item.item.name.toLowerCase() === gameId.replace(/-/g, ' ').toLowerCase()
+      );
+      
+      if (existingIndex === -1) {
+        // 添加新游戏到结构化数据
+        schemaData.itemListElement.push({
+          "@type": "ListItem",
+          "position": schemaData.itemListElement.length + 1,
+          "item": {
+            "@type": "Game",
+            "name": gameId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            "description": description,
+            "genre": category,
+            "url": gameId === '2048' ? 'https://cloud.onlinegames.io/games/2025/unity/monster-survivors/index-og.html' : 
+                   gameId === 'sprunki' ? 'https://game.sprunki.com/game.sprunki.html' : 
+                   gameId === 'sprunki-phase-3' ? 'https://iframegame.com/embed/sprunki-phase-3/index.html' : 
+                   gameId === 'sprunki-roblox' ? 'https://game.sprunki.com/sprunkiroblox.html' : 
+                   `https://cdn.games/${gameId}/index.html`
+          }
+        });
+        
+        // 更新结构化数据
+        schemaScript.textContent = JSON.stringify(schemaData, null, 2);
+      }
+    }
+    
+    function closeGameModal() {
+      const modal = document.getElementById('game-modal');
+      const modalContent = document.getElementById('modal-content');
+      const iframe = document.getElementById('game-frame');
+      
+      // 添加关闭动画
+      modalContent.classList.remove('opacity-100', 'scale-100');
+      modalContent.classList.add('opacity-0', 'scale-95');
+      
+      // 延迟隐藏和重置iframe
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        // 清空iframe src以防止资源占用和音频继续播放
+        iframe.src = '';
+        // 恢复body滚动
+        document.body.style.overflow = '';
+      }, 300);
+    }
+    
+    // 点击背景关闭
+    document.getElementById('game-modal').onclick = (e) => {
+      if(e.target === document.getElementById('game-modal')) {
+        closeGameModal();
+      }
+    }
+    
+    // 阻止触摸事件传播，隔离滚动
+    document.querySelector('#game-modal .touch-pan-y').addEventListener('touchmove', function(e) {
+      e.stopPropagation();
+    }, { passive: true });
+  </script>
+  
+  <style>
+    /* 暗黑模式支持 */
+    @media (prefers-color-scheme: dark) {
+      .dark-mode {
+        --apple-light: #1d1d1f;
+        --apple-dark: #f5f5f7;
+      }
+      
+      .dark-mode .bg-white {
+        background-color: #2c2c2e;
+      }
+      
+      .dark-mode .text-gray-600,
+      .dark-mode .text-gray-700 {
+        color: #e5e5ea;
+      }
+      
+      .dark-mode .bg-white\/50 {
+        background-color: rgba(44, 44, 46, 0.5);
+      }
+    }
+    
+    /* 设置系统字体栈 */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+    
+    /* 修复Safari中的iframe显示问题 */
+    iframe {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+    
+    /* 修复max-height计算 */
+    .max-h-calc\(40vh\ -\ 64px\) {
+      max-height: calc(40vh - 64px);
+    }
+  </style>
+</body>
+</html> 
