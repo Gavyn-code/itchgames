@@ -328,6 +328,7 @@
       const modal = document.getElementById('game-modal');
       const modalContent = document.getElementById('modal-content');
       const iframe = document.getElementById('game-frame');
+      const gameContainer = document.getElementById('game-container');
       
       // 退出全屏模式（如果处于全屏状态）
       if (document.fullscreenElement || 
@@ -335,6 +336,21 @@
           document.mozFullScreenElement ||
           document.msFullscreenElement) {
         exitFullscreen();
+      }
+      
+      // 检查是否处于模拟全屏状态
+      if (gameContainer.classList.contains('is-fullscreen')) {
+        document.body.style.overflow = '';
+        gameContainer.classList.remove('is-fullscreen');
+        
+        // 解除屏幕方向锁定
+        try {
+          if (screen.orientation && screen.orientation.unlock) {
+            screen.orientation.unlock();
+          }
+        } catch (e) {
+          console.log('无法解除屏幕方向锁定:', e);
+        }
       }
       
       // 添加关闭动画
@@ -359,19 +375,63 @@
       const exitIcon = document.querySelector('.fullscreen-exit');
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
-      // 检查当前是否为全屏状态
-      if (!document.fullscreenElement && 
-          !document.webkitFullscreenElement && 
-          !document.mozFullScreenElement &&
-          !document.msFullscreenElement) {
+      if (gameContainer.classList.contains('is-fullscreen') || 
+          document.fullscreenElement || 
+          document.webkitFullscreenElement || 
+          document.mozFullScreenElement ||
+          document.msFullscreenElement) {
+        // 退出全屏模式
+        
+        // 恢复正常滚动
+        document.body.style.overflow = '';
+        gameContainer.classList.remove('is-fullscreen');
+        document.body.classList.remove('game-fullscreen');
+        
+        // 解除屏幕方向锁定（移动设备）
+        if (isMobile) {
+          try {
+            if (screen.orientation && screen.orientation.unlock) {
+              screen.orientation.unlock();
+            }
+          } catch (e) {
+            console.log('无法解除屏幕方向锁定:', e);
+          }
+        }
+        
+        // 处理按钮图标
+        enterIcon.classList.remove('hidden');
+        exitIcon.classList.add('hidden');
+        
+        // 处理原生全屏API
+        if (document.fullscreenElement || 
+            document.webkitFullscreenElement || 
+            document.mozFullScreenElement ||
+            document.msFullscreenElement) {
+          exitFullscreen();
+        }
+        
+        // 移除额外的退出按钮（如果存在）
+        const extraExitBtn = document.getElementById('extra-exit-fullscreen-btn');
+        if (extraExitBtn) {
+          extraExitBtn.remove();
+        }
+      } else {
+        // 进入全屏模式
+        
+        // 防止背景滚动
+        document.body.style.overflow = 'hidden';
+        
+        // 更新按钮图标
+        enterIcon.classList.add('hidden');
+        exitIcon.classList.remove('hidden');
         
         // 特殊处理移动设备
         if (isMobile) {
-          // 移动设备使用模拟全屏而不是原生全屏API
-          document.body.style.overflow = 'hidden'; // 防止背景滚动
+          // 使用模拟全屏而非原生API（更可靠）
           gameContainer.classList.add('is-fullscreen');
+          document.body.classList.add('game-fullscreen');
           
-          // 强制设置屏幕方向为横屏
+          // 尝试锁定屏幕方向
           try {
             if (screen.orientation && screen.orientation.lock) {
               screen.orientation.lock('landscape').catch(e => console.log('无法锁定屏幕方向:', e));
@@ -380,45 +440,69 @@
             console.log('屏幕方向API不可用:', e);
           }
           
-          // 更新图标状态
-          enterIcon.classList.add('hidden');
-          exitIcon.classList.remove('hidden');
-        } else {
-          // 桌面设备使用原生全屏API
-          if (gameContainer.requestFullscreen) {
-            gameContainer.requestFullscreen();
-          } else if (gameContainer.webkitRequestFullscreen) { /* Safari */
-            gameContainer.webkitRequestFullscreen();
-          } else if (gameContainer.msRequestFullscreen) { /* IE11 */
-            gameContainer.msRequestFullscreen();
-          } else if (gameContainer.mozRequestFullScreen) { /* Firefox */
-            gameContainer.mozRequestFullScreen();
+          // 添加额外的退出全屏按钮（更明显、更大）
+          if (!document.getElementById('extra-exit-fullscreen-btn')) {
+            const extraExitBtn = document.createElement('button');
+            extraExitBtn.id = 'extra-exit-fullscreen-btn';
+            extraExitBtn.className = 'fixed z-[10001] mobile-exit-btn bg-white/90 rounded-full shadow-lg w-16 h-16 flex items-center justify-center';
+            extraExitBtn.style.bottom = '20px';
+            extraExitBtn.style.right = '20px';
+            extraExitBtn.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+              </svg>
+            `;
+            extraExitBtn.addEventListener('click', toggleFullscreen);
+            document.body.appendChild(extraExitBtn);
           }
-        }
-      } else {
-        // 退出全屏模式
-        if (isMobile) {
-          // 移动设备上移除模拟全屏
-          document.body.style.overflow = '';
-          gameContainer.classList.remove('is-fullscreen');
-          
-          // 解除屏幕方向锁定
+        } else {
+          // 桌面设备：优先使用原生全屏API，但同时保留退出按钮
           try {
-            if (screen.orientation && screen.orientation.unlock) {
-              screen.orientation.unlock();
+            if (gameContainer.requestFullscreen) {
+              gameContainer.requestFullscreen().catch(e => {
+                console.log('原生全屏请求失败，使用模拟全屏:', e);
+                // 如果原生API失败，回退到模拟全屏
+                useSimulatedFullscreen();
+              });
+            } else if (gameContainer.webkitRequestFullscreen) {
+              gameContainer.webkitRequestFullscreen();
+            } else if (gameContainer.msRequestFullscreen) {
+              gameContainer.msRequestFullscreen();
+            } else if (gameContainer.mozRequestFullScreen) {
+              gameContainer.mozRequestFullScreen();
+            } else {
+              // 如果没有可用的原生API，使用模拟全屏
+              useSimulatedFullscreen();
+            }
+            
+            // 为桌面端添加额外的全屏退出按钮（备用）
+            if (!document.getElementById('extra-exit-fullscreen-btn')) {
+              const extraExitBtn = document.createElement('button');
+              extraExitBtn.id = 'extra-exit-fullscreen-btn';
+              extraExitBtn.className = 'fixed z-[99999] desktop-exit-btn bg-white/80 rounded-full shadow-lg w-14 h-14 flex items-center justify-center';
+              extraExitBtn.style.bottom = '20px';
+              extraExitBtn.style.right = '20px';
+              extraExitBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+                </svg>
+              `;
+              extraExitBtn.addEventListener('click', toggleFullscreen);
+              document.body.appendChild(extraExitBtn);
             }
           } catch (e) {
-            console.log('无法解除屏幕方向锁定:', e);
+            console.log('原生全屏API异常，使用模拟全屏:', e);
+            useSimulatedFullscreen();
           }
-          
-          // 更新图标状态
-          enterIcon.classList.remove('hidden');
-          exitIcon.classList.add('hidden');
-        } else {
-          // 桌面设备使用原生全屏API退出
-          exitFullscreen();
         }
       }
+    }
+    
+    // 辅助函数：使用模拟全屏
+    function useSimulatedFullscreen() {
+      const gameContainer = document.getElementById('game-container');
+      gameContainer.classList.add('is-fullscreen');
+      document.body.classList.add('game-fullscreen');
     }
     
     function exitFullscreen() {
@@ -442,6 +526,7 @@
     function updateFullscreenIcon() {
       const enterIcon = document.querySelector('.fullscreen-enter');
       const exitIcon = document.querySelector('.fullscreen-exit');
+      const gameContainer = document.getElementById('game-container');
       
       if (document.fullscreenElement || 
           document.webkitFullscreenElement || 
@@ -451,7 +536,6 @@
         exitIcon.classList.remove('hidden');
       } else {
         // 检查是否处于模拟全屏状态（移动设备）
-        const gameContainer = document.getElementById('game-container');
         if (!gameContainer.classList.contains('is-fullscreen')) {
           enterIcon.classList.remove('hidden');
           exitIcon.classList.add('hidden');
@@ -554,12 +638,23 @@
     :-webkit-full-screen #fullscreen-btn,
     :-moz-full-screen #fullscreen-btn,
     :-ms-fullscreen #fullscreen-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-      background-color: rgba(255, 255, 255, 0.8);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      position: fixed !important;
+      bottom: 20px !important;
+      right: 20px !important;
+      z-index: 99999 !important;
+      background-color: rgba(255, 255, 255, 0.8) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+      display: flex !important;
+      opacity: 0.9 !important;
+    }
+    
+    /* 桌面全屏按钮悬停效果 */
+    :fullscreen #fullscreen-btn:hover,
+    :-webkit-full-screen #fullscreen-btn:hover,
+    :-moz-full-screen #fullscreen-btn:hover,
+    :-ms-fullscreen #fullscreen-btn:hover {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      opacity: 1 !important;
     }
     
     /* 移动端全屏按钮触控区域优化 */
@@ -596,7 +691,7 @@
         bottom: 0;
         width: 100vw;
         height: 100vh;
-        z-index: 9999;
+        z-index: 10000;
         background: black;
       }
       
@@ -616,31 +711,84 @@
       bottom: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 9999;
+      z-index: 10000;
       background-color: #000;
     }
     
     #game-container.is-fullscreen #game-frame {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       border-radius: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+    }
+    
+    /* 禁用模拟全屏时的滚动 */
+    body.game-fullscreen {
+      overflow: hidden !important;
+      position: fixed;
+      width: 100%;
+      height: 100%;
     }
     
     /* 确保模拟全屏时退出按钮一直可见 */
     #game-container.is-fullscreen #fullscreen-btn {
+      position: fixed !important;
+      z-index: 99999 !important;
+      display: flex !important;
+    }
+    
+    /* 额外的退出全屏按钮样式 */
+    #extra-exit-fullscreen-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      z-index: 10000;
-      background-color: rgba(255, 255, 255, 0.8);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      width: 56px;
-      height: 56px;
-      min-width: 56px;
-      min-height: 56px;
+      z-index: 10001;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    
+    /* 桌面端全屏按钮样式 */
+    .desktop-exit-btn {
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+    
+    .desktop-exit-btn:hover {
+      opacity: 1;
+      background-color: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    /* 确保原生全屏下按钮可见 - 特别针对桌面端 */
+    :fullscreen #extra-exit-fullscreen-btn,
+    :-webkit-full-screen #extra-exit-fullscreen-btn,
+    :-moz-full-screen #extra-exit-fullscreen-btn,
+    :-ms-fullscreen #extra-exit-fullscreen-btn {
+      display: flex !important;
+      z-index: 99999 !important;
+      position: fixed !important;
+      bottom: 20px !important;
+      right: 20px !important;
+    }
+    
+    /* 确保全屏时原按钮也可见 */
+    :fullscreen .fullscreen-exit,
+    :-webkit-full-screen .fullscreen-exit,
+    :-moz-full-screen .fullscreen-exit,
+    :-ms-fullscreen .fullscreen-exit {
+      display: block !important;
     }
     
     /* 横屏模式支持 */
@@ -651,8 +799,15 @@
       }
       
       #game-container.is-fullscreen #game-frame {
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
+      }
+      
+      /* 确保横屏下退出按钮位置正确 */
+      #extra-exit-fullscreen-btn {
+        bottom: 20px;
+        right: 20px;
+        transform: none;
       }
     }
     
@@ -661,7 +816,7 @@
       #game-container.is-fullscreen {
         transform: rotate(90deg);
         transform-origin: bottom left;
-        width: 100vh;
+        width: 100vh; /* 交换宽高 */
         height: 100vw;
         position: absolute;
         top: -100vw;
@@ -670,14 +825,39 @@
       }
       
       #game-container.is-fullscreen #game-frame {
-        width: 100vh;
-        height: 100vw;
+        width: 100%;
+        height: 100%;
       }
       
-      #game-container.is-fullscreen #fullscreen-btn {
+      /* 竖屏模式下调整退出按钮位置 */
+      #extra-exit-fullscreen-btn {
         transform: rotate(-90deg);
         bottom: 20px;
         right: 20px;
+      }
+    }
+    
+    /* iOS特殊处理 */
+    @supports (-webkit-touch-callout: none) {
+      /* iOS设备特定样式 */
+      #game-container.is-fullscreen {
+        position: fixed;
+        height: 100vh;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10000;
+      }
+      
+      /* 强制iOS上的退出按钮可见 */
+      #extra-exit-fullscreen-btn {
+        position: fixed !important;
+        z-index: 100000 !important;
+        /* 增加按钮尺寸以便于触控 */
+        width: 72px !important;
+        height: 72px !important;
       }
     }
   </style>
