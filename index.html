@@ -354,40 +354,70 @@
     // 全屏控制功能
     function toggleFullscreen() {
       const gameContainer = document.getElementById('game-container');
+      const gameFrame = document.getElementById('game-frame');
       const enterIcon = document.querySelector('.fullscreen-enter');
       const exitIcon = document.querySelector('.fullscreen-exit');
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
+      // 检查当前是否为全屏状态
       if (!document.fullscreenElement && 
           !document.webkitFullscreenElement && 
           !document.mozFullScreenElement &&
           !document.msFullscreenElement) {
-        // 进入全屏模式
-        if (gameContainer.requestFullscreen) {
-          gameContainer.requestFullscreen();
-        } else if (gameContainer.webkitRequestFullscreen) { /* Safari */
-          gameContainer.webkitRequestFullscreen();
-        } else if (gameContainer.msRequestFullscreen) { /* IE11 */
-          gameContainer.msRequestFullscreen();
-        } else if (gameContainer.mozRequestFullScreen) { /* Firefox */
-          gameContainer.mozRequestFullScreen();
+        
+        // 特殊处理移动设备
+        if (isMobile) {
+          // 移动设备使用模拟全屏而不是原生全屏API
+          document.body.style.overflow = 'hidden'; // 防止背景滚动
+          gameContainer.classList.add('is-fullscreen');
+          
+          // 强制设置屏幕方向为横屏
+          try {
+            if (screen.orientation && screen.orientation.lock) {
+              screen.orientation.lock('landscape').catch(e => console.log('无法锁定屏幕方向:', e));
+            }
+          } catch (e) {
+            console.log('屏幕方向API不可用:', e);
+          }
+          
+          // 更新图标状态
+          enterIcon.classList.add('hidden');
+          exitIcon.classList.remove('hidden');
+        } else {
+          // 桌面设备使用原生全屏API
+          if (gameContainer.requestFullscreen) {
+            gameContainer.requestFullscreen();
+          } else if (gameContainer.webkitRequestFullscreen) { /* Safari */
+            gameContainer.webkitRequestFullscreen();
+          } else if (gameContainer.msRequestFullscreen) { /* IE11 */
+            gameContainer.msRequestFullscreen();
+          } else if (gameContainer.mozRequestFullScreen) { /* Firefox */
+            gameContainer.mozRequestFullScreen();
+          }
         }
-        
-        // 更改图标为退出全屏
-        enterIcon.classList.add('hidden');
-        exitIcon.classList.remove('hidden');
-        
-        // 增加全屏状态标记
-        gameContainer.classList.add('is-fullscreen');
       } else {
         // 退出全屏模式
-        exitFullscreen();
-        
-        // 更改图标为进入全屏
-        enterIcon.classList.remove('hidden');
-        exitIcon.classList.add('hidden');
-        
-        // 移除全屏状态标记
-        gameContainer.classList.remove('is-fullscreen');
+        if (isMobile) {
+          // 移动设备上移除模拟全屏
+          document.body.style.overflow = '';
+          gameContainer.classList.remove('is-fullscreen');
+          
+          // 解除屏幕方向锁定
+          try {
+            if (screen.orientation && screen.orientation.unlock) {
+              screen.orientation.unlock();
+            }
+          } catch (e) {
+            console.log('无法解除屏幕方向锁定:', e);
+          }
+          
+          // 更新图标状态
+          enterIcon.classList.remove('hidden');
+          exitIcon.classList.add('hidden');
+        } else {
+          // 桌面设备使用原生全屏API退出
+          exitFullscreen();
+        }
       }
     }
     
@@ -420,10 +450,24 @@
         enterIcon.classList.add('hidden');
         exitIcon.classList.remove('hidden');
       } else {
-        enterIcon.classList.remove('hidden');
-        exitIcon.classList.add('hidden');
+        // 检查是否处于模拟全屏状态（移动设备）
+        const gameContainer = document.getElementById('game-container');
+        if (!gameContainer.classList.contains('is-fullscreen')) {
+          enterIcon.classList.remove('hidden');
+          exitIcon.classList.add('hidden');
+        }
       }
     }
+    
+    // 监听ESC键，用于退出模拟全屏
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        const gameContainer = document.getElementById('game-container');
+        if (gameContainer.classList.contains('is-fullscreen')) {
+          toggleFullscreen();
+        }
+      }
+    });
     
     // 点击背景关闭
     document.getElementById('game-modal').onclick = (e) => {
@@ -561,12 +605,79 @@
         height: 100vh;
         border-radius: 0;
       }
+    }
+    
+    /* 手机端全屏模式增强 */
+    #game-container.is-fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      background-color: #000;
+    }
+    
+    #game-container.is-fullscreen #game-frame {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+    }
+    
+    /* 确保模拟全屏时退出按钮一直可见 */
+    #game-container.is-fullscreen #fullscreen-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10000;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      width: 56px;
+      height: 56px;
+      min-width: 56px;
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* 横屏模式支持 */
+    @media screen and (orientation: landscape) {
+      #game-container.is-fullscreen {
+        width: 100vw;
+        height: 100vh;
+      }
+      
+      #game-container.is-fullscreen #game-frame {
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+    
+    /* 竖屏模式下模拟横屏 */
+    @media screen and (orientation: portrait) {
+      #game-container.is-fullscreen {
+        transform: rotate(90deg);
+        transform-origin: bottom left;
+        width: 100vh;
+        height: 100vw;
+        position: absolute;
+        top: -100vw;
+        left: 0;
+        overflow: hidden;
+      }
+      
+      #game-container.is-fullscreen #game-frame {
+        width: 100vh;
+        height: 100vw;
+      }
       
       #game-container.is-fullscreen #fullscreen-btn {
-        position: fixed;
+        transform: rotate(-90deg);
         bottom: 20px;
         right: 20px;
-        z-index: 10000;
       }
     }
   </style>
