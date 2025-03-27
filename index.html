@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- [SEO LOCK] 后续扩展区 -->
-  <meta name="description" content="Gavyn Games - Premium Game Directory">
-  <title>Gavyn Games | Game Directory</title>
+  <meta name="description" content="Itch Games - Premium Game Directory">
+  <title>Itch Games | Game Directory</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* [COLOR LOCK] 苹果色系定义 */
@@ -30,23 +30,23 @@
   </script>
   <!-- [LOCK] 在<head>末尾添加 -->
   <!-- [SEO SECTION] -->
-  <meta name="description" content="Gavyn Games offers curated premium web games with an immersive instant play experience.">
-  <link rel="canonical" href="https://gavyngames.info">
-  <meta property="og:title" content="Gavyn Games | Game Directory">
+  <meta name="description" content="Itch Games offers curated premium web games with an immersive instant play experience.">
+  <link rel="canonical" href="https://itchgames.info">
+  <meta property="og:title" content="Itch Games | Game Directory">
   <meta property="og:description" content="Curated premium web games with an immersive instant play experience">
-  <meta property="og:url" content="https://gavyngames.info">
+  <meta property="og:url" content="https://itchgames.info">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://gavyngames.info/images/og-image.jpg">
+  <meta property="og:image" content="https://itchgames.info/images/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Gavyn Games | Game Directory">
+  <meta name="twitter:title" content="Itch Games | Game Directory">
   <meta name="twitter:description" content="Curated premium web games with an immersive instant play experience">
-  <meta name="twitter:image" content="https://gavyngames.info/images/twitter-card.jpg">
+  <meta name="twitter:image" content="https://itchgames.info/images/twitter-card.jpg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Gavyn Games",
-    "url": "https://gavyngames.info",
+    "name": "Itch Games",
+    "url": "https://itchgames.info",
     "description": "Premium web game directory platform",
     "potentialAction": {
       "@type": "SearchAction",
@@ -65,10 +65,10 @@
         "position": 1,
         "item": {
           "@type": "Game",
-          "name": "2048",
-          "description": "Classic number merging game, combine identical numbers by sliding to reach 2048.",
-          "genre": "Puzzle",
-          "url": "https://gavyngames.info/games/2048"
+          "name": "Sprunki",
+          "description": "Join Sprunki on an exciting adventure through colorful worlds. Overcome obstacles, collect items, and discover hidden secrets in this engaging platformer game.",
+          "genre": "Adventure",
+          "url": "https://itchgames.info/games/sprunki"
         }
       },
       {
@@ -76,10 +76,21 @@
         "position": 2,
         "item": {
           "@type": "Game",
-          "name": "Ninja Jump",
-          "description": "Fast-paced action game where you control a ninja character jumping over obstacles.",
-          "genre": "Action",
-          "url": "https://gavyngames.info/games/ninja-jump"
+          "name": "Sprunki Phase 3",
+          "description": "Sprunki is back with Phase 3! New levels, enhanced gameplay, and more challenging obstacles in this sequel to the popular platformer.",
+          "genre": "Adventure",
+          "url": "https://itchgames.info/games/sprunki-phase-3"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "Game",
+          "name": "Sprunki Roblox",
+          "description": "Experience Sprunki in the Roblox universe! Build, explore, and embark on adventures with friends in this exciting crossover.",
+          "genre": "Adventure",
+          "url": "https://itchgames.info/games/sprunki-roblox"
         }
       }
     ]
@@ -103,26 +114,7 @@
     <!-- [MODIFIABLE] 内容区 -->
     <section id="nav-bar" class="py-6 sticky top-0 bg-[var(--apple-light)] z-10">
       <div class="flex justify-between items-center">
-        <h1 class="text-xl font-bold md:text-2xl">Gavyn Games</h1>
-        <nav class="hidden md:block">
-          <ul class="flex space-x-6">
-            <li><a href="#" class="hover:text-[var(--apple-blue)]">Popular</a></li>
-            <li><a href="#" class="hover:text-[var(--apple-blue)]">Categories</a></li>
-            <li><a href="#" class="hover:text-[var(--apple-blue)]">New Releases</a></li>
-          </ul>
-        </nav>
-        <button class="md:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-        </button>
-      </div>
-      <div class="md:hidden mt-4 hidden" id="mobile-menu">
-        <ul class="flex flex-col space-y-2">
-          <li><a href="#" class="block py-2 hover:text-[var(--apple-blue)]">Popular</a></li>
-          <li><a href="#" class="block py-2 hover:text-[var(--apple-blue)]">Categories</a></li>
-          <li><a href="#" class="block py-2 hover:text-[var(--apple-blue)]">New Releases</a></li>
-        </ul>
+        <h1 class="text-xl font-bold md:text-2xl">Itch Games</h1>
       </div>
       
       <!-- [MODIFIABLE START] 在#nav-bar内添加 -->
@@ -182,15 +174,25 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <iframe 
-          class="w-full h-[60vh] border-none rounded-t-xl bg-gray-100" 
-          id="game-frame"
-          loading="lazy"
-          decoding="async"
-          frameborder="0"
-          allow="autoplay; fullscreen"
-          title="Game Content"
-        ></iframe>
+        <div class="relative w-full h-[60vh]" id="game-container">
+          <iframe 
+            class="w-full h-full border-none rounded-t-xl bg-gray-100" 
+            id="game-frame"
+            loading="lazy"
+            decoding="async"
+            frameborder="0"
+            allow="autoplay; fullscreen"
+            title="Game Content"
+          ></iframe>
+          <button onclick="toggleFullscreen()" id="fullscreen-btn" class="absolute bottom-4 right-4 z-50 bg-white/80 rounded-full p-3 shadow-md hover:bg-white transition-all duration-300 w-12 h-12 flex items-center justify-center min-w-[44px] min-h-[44px]">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fullscreen-enter">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fullscreen-exit hidden">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+            </svg>
+          </button>
+        </div>
         <div class="p-6 h-[40vh] max-h-calc(40vh - 64px) overflow-y-auto touch-pan-y overscroll-contain">
           <div class="flex items-center gap-2 mb-2">
             <h2 class="text-2xl font-bold" id="modal-title">Game Title</h2>
@@ -203,15 +205,8 @@
   </main>
 
   <script>
-    // 移动端菜单交互
+    // DOM加载完成后初始化
     document.addEventListener('DOMContentLoaded', function() {
-      const menuButton = document.querySelector('#nav-bar button');
-      const mobileMenu = document.querySelector('#mobile-menu');
-      
-      menuButton.addEventListener('click', function() {
-        mobileMenu.classList.toggle('hidden');
-      });
-      
       // 初始化暗黑模式检测
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.classList.add('dark-mode');
@@ -278,9 +273,7 @@
       // 延迟加载iframe内容
       setTimeout(() => {
         // 特定游戏使用指定URL
-        if (gameId === '2048') {
-          iframe.src = 'https://cloud.onlinegames.io/games/2025/unity/monster-survivors/index-og.html';
-        } else if (gameId === 'sprunki') {
+        if (gameId === 'sprunki') {
           iframe.src = 'https://game.sprunki.com/game.sprunki.html';
         } else if (gameId === 'sprunki-phase-3') {
           iframe.src = 'https://iframegame.com/embed/sprunki-phase-3/index.html';
@@ -319,8 +312,7 @@
             "name": gameId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
             "description": description,
             "genre": category,
-            "url": gameId === '2048' ? 'https://cloud.onlinegames.io/games/2025/unity/monster-survivors/index-og.html' : 
-                   gameId === 'sprunki' ? 'https://game.sprunki.com/game.sprunki.html' : 
+            "url": gameId === 'sprunki' ? 'https://game.sprunki.com/game.sprunki.html' : 
                    gameId === 'sprunki-phase-3' ? 'https://iframegame.com/embed/sprunki-phase-3/index.html' : 
                    gameId === 'sprunki-roblox' ? 'https://game.sprunki.com/sprunkiroblox.html' : 
                    `https://cdn.games/${gameId}/index.html`
@@ -337,6 +329,14 @@
       const modalContent = document.getElementById('modal-content');
       const iframe = document.getElementById('game-frame');
       
+      // 退出全屏模式（如果处于全屏状态）
+      if (document.fullscreenElement || 
+          document.webkitFullscreenElement || 
+          document.mozFullScreenElement ||
+          document.msFullscreenElement) {
+        exitFullscreen();
+      }
+      
       // 添加关闭动画
       modalContent.classList.remove('opacity-100', 'scale-100');
       modalContent.classList.add('opacity-0', 'scale-95');
@@ -349,6 +349,80 @@
         // 恢复body滚动
         document.body.style.overflow = '';
       }, 300);
+    }
+    
+    // 全屏控制功能
+    function toggleFullscreen() {
+      const gameContainer = document.getElementById('game-container');
+      const enterIcon = document.querySelector('.fullscreen-enter');
+      const exitIcon = document.querySelector('.fullscreen-exit');
+      
+      if (!document.fullscreenElement && 
+          !document.webkitFullscreenElement && 
+          !document.mozFullScreenElement &&
+          !document.msFullscreenElement) {
+        // 进入全屏模式
+        if (gameContainer.requestFullscreen) {
+          gameContainer.requestFullscreen();
+        } else if (gameContainer.webkitRequestFullscreen) { /* Safari */
+          gameContainer.webkitRequestFullscreen();
+        } else if (gameContainer.msRequestFullscreen) { /* IE11 */
+          gameContainer.msRequestFullscreen();
+        } else if (gameContainer.mozRequestFullScreen) { /* Firefox */
+          gameContainer.mozRequestFullScreen();
+        }
+        
+        // 更改图标为退出全屏
+        enterIcon.classList.add('hidden');
+        exitIcon.classList.remove('hidden');
+        
+        // 增加全屏状态标记
+        gameContainer.classList.add('is-fullscreen');
+      } else {
+        // 退出全屏模式
+        exitFullscreen();
+        
+        // 更改图标为进入全屏
+        enterIcon.classList.remove('hidden');
+        exitIcon.classList.add('hidden');
+        
+        // 移除全屏状态标记
+        gameContainer.classList.remove('is-fullscreen');
+      }
+    }
+    
+    function exitFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen();
+      } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+      }
+    }
+    
+    // 监听全屏变化事件
+    document.addEventListener('fullscreenchange', updateFullscreenIcon);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
+    document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
+    document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
+    
+    function updateFullscreenIcon() {
+      const enterIcon = document.querySelector('.fullscreen-enter');
+      const exitIcon = document.querySelector('.fullscreen-exit');
+      
+      if (document.fullscreenElement || 
+          document.webkitFullscreenElement || 
+          document.mozFullScreenElement ||
+          document.msFullscreenElement) {
+        enterIcon.classList.add('hidden');
+        exitIcon.classList.remove('hidden');
+      } else {
+        enterIcon.classList.remove('hidden');
+        exitIcon.classList.add('hidden');
+      }
     }
     
     // 点击背景关闭
@@ -384,6 +458,10 @@
       .dark-mode .bg-white\/50 {
         background-color: rgba(44, 44, 46, 0.5);
       }
+      
+      .dark-mode .bg-white\/80 {
+        background-color: rgba(44, 44, 46, 0.8);
+      }
     }
     
     /* 设置系统字体栈 */
@@ -400,6 +478,96 @@
     /* 修复max-height计算 */
     .max-h-calc\(40vh\ -\ 64px\) {
       max-height: calc(40vh - 64px);
+    }
+    
+    /* 全屏模式样式优化 */
+    :fullscreen #game-container,
+    :-webkit-full-screen #game-container,
+    :-moz-full-screen #game-container,
+    :-ms-fullscreen #game-container {
+      width: 100vw;
+      height: 100vh;
+      padding: 0;
+      margin: 0;
+      display: flex;
+    }
+    
+    /* 确保全屏下的iframe尺寸正确 */
+    :fullscreen #game-frame,
+    :-webkit-full-screen #game-frame,
+    :-moz-full-screen #game-frame,
+    :-ms-fullscreen #game-frame {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    
+    /* 确保全屏模式下按钮可见 */
+    :fullscreen #fullscreen-btn,
+    :-webkit-full-screen #fullscreen-btn,
+    :-moz-full-screen #fullscreen-btn,
+    :-ms-fullscreen #fullscreen-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* 移动端全屏按钮触控区域优化 */
+    @media (max-width: 768px) {
+      #fullscreen-btn {
+        bottom: 16px;
+        right: 16px;
+        min-width: 48px;
+        min-height: 48px;
+        width: 48px;
+        height: 48px;
+      }
+      
+      :fullscreen #fullscreen-btn,
+      :-webkit-full-screen #fullscreen-btn,
+      :-moz-full-screen #fullscreen-btn,
+      :-ms-fullscreen #fullscreen-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        min-height: 56px;
+      }
+    }
+    
+    /* 修复Safari和iOS设备上的全屏问题 */
+    @supports (-webkit-touch-callout: none) {
+      #game-container.is-fullscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999;
+        background: black;
+      }
+      
+      #game-container.is-fullscreen #game-frame {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+      }
+      
+      #game-container.is-fullscreen #fullscreen-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10000;
+      }
     }
   </style>
 </body>
