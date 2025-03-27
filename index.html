@@ -127,13 +127,8 @@
       
       <!-- [MODIFIABLE START] 在#nav-bar内添加 -->
       <nav class="flex overflow-x-auto pb-2 space-x-4 mt-4">
-        <button class="px-4 py-2 rounded-full bg-[var(--apple-blue)] text-white whitespace-nowrap">All</button>
-        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Action</button>
-        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Puzzle</button>
-        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Strategy</button>
-        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">RPG</button>
-        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Simulation</button>
-        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300">Casual</button>
+        <button class="px-4 py-2 rounded-full bg-[var(--apple-blue)] text-white whitespace-nowrap category-btn" data-category="All" onclick="filterGames('All')">All</button>
+        <button class="px-4 py-2 rounded-full bg-white/50 whitespace-nowrap hover:bg-white/70 transition-all duration-300 category-btn" data-category="Adventure" onclick="filterGames('Adventure')">Adventure</button>
       </nav>
     </section>
     
@@ -177,20 +172,6 @@
           </div>
         </div>
       </div>
-      
-      <div class="relative group cursor-pointer" onclick="showGameModal('2048', 'Puzzle', 'Classic number merging game. Combine identical numbers by sliding to reach 2048. Simple to learn but challenging to master.')">
-        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div class="aspect-video bg-gray-100 rounded-t-xl flex items-center justify-center">
-            <span class="text-3xl font-bold text-[var(--apple-blue)]">2048</span>
-          </div>
-          <div class="p-4">
-            <h3 class="font-semibold text-lg">2048</h3>
-            <span class="text-[var(--apple-blue)] text-sm">Puzzle</span>
-            <p class="text-gray-600 mt-2 line-clamp-3">Classic number merging game. Combine identical numbers by sliding to reach 2048.</p>
-          </div>
-        </div>
-      </div>
-      
     </section>
 
     <!-- [MODIFIABLE] 在</main>前添加悬浮层 -->
@@ -244,7 +225,41 @@
           document.body.classList.remove('dark-mode');
         }
       });
+      
+      // 初始化游戏分类过滤器
+      filterGames('All');
     });
+
+    // 游戏分类过滤功能
+    function filterGames(category) {
+      // 更新分类按钮样式
+      const buttons = document.querySelectorAll('.category-btn');
+      buttons.forEach(btn => {
+        if (btn.dataset.category === category) {
+          btn.classList.add('bg-[var(--apple-blue)]', 'text-white');
+          btn.classList.remove('bg-white/50', 'hover:bg-white/70');
+        } else {
+          btn.classList.remove('bg-[var(--apple-blue)]', 'text-white');
+          btn.classList.add('bg-white/50', 'hover:bg-white/70');
+        }
+      });
+      
+      // 过滤游戏卡片
+      const gameCards = document.querySelectorAll('#game-grid > div');
+      gameCards.forEach(card => {
+        // 直接从onclick属性中获取游戏分类
+        const onclickAttr = card.getAttribute('onclick');
+        // 使用正则表达式从onclick属性中提取分类名称
+        const categoryMatch = onclickAttr.match(/'([^']*)',\s*'([^']*)'/);
+        const gameCategory = categoryMatch ? categoryMatch[2] : '';
+        
+        if (category === 'All' || gameCategory === category) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
 
     // [LOCK] 增强版加载逻辑
     function showGameModal(gameId, category, description) {
