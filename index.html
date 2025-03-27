@@ -371,6 +371,7 @@
     function toggleFullscreen() {
       const gameContainer = document.getElementById('game-container');
       const gameFrame = document.getElementById('game-frame');
+      const modalContent = document.getElementById('modal-content');
       const enterIcon = document.querySelector('.fullscreen-enter');
       const exitIcon = document.querySelector('.fullscreen-exit');
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -386,6 +387,7 @@
         document.body.style.overflow = '';
         gameContainer.classList.remove('is-fullscreen');
         document.body.classList.remove('game-fullscreen');
+        modalContent.classList.remove('is-fullscreen');
         
         // 解除屏幕方向锁定（移动设备）
         if (isMobile) {
@@ -430,6 +432,7 @@
           // 使用模拟全屏而非原生API（更可靠）
           gameContainer.classList.add('is-fullscreen');
           document.body.classList.add('game-fullscreen');
+          modalContent.classList.add('is-fullscreen');
           
           // 尝试锁定屏幕方向
           try {
@@ -501,7 +504,9 @@
     // 辅助函数：使用模拟全屏
     function useSimulatedFullscreen() {
       const gameContainer = document.getElementById('game-container');
+      const modalContent = document.getElementById('modal-content');
       gameContainer.classList.add('is-fullscreen');
+      modalContent.classList.add('is-fullscreen');
       document.body.classList.add('game-fullscreen');
     }
     
@@ -727,6 +732,33 @@
       z-index: 10000;
     }
     
+    /* 模态框全屏样式 */
+    #modal-content.is-fullscreen {
+      width: 100% !important;
+      height: 100% !important;
+      background: black;
+      top: 0 !important;
+      left: 0 !important;
+      transform: none !important;
+      transition: none !important;
+      border-radius: 0 !important;
+    }
+
+    /* 模态框全屏时隐藏描述部分 */
+    #modal-content.is-fullscreen .p-6 {
+      display: none !important;
+    }
+    
+    /* 模态框全屏时修改游戏容器高度 */
+    #modal-content.is-fullscreen #game-container {
+      height: 100vh !important;
+    }
+    
+    /* 模态框全屏时隐藏关闭按钮 */
+    #modal-content.is-fullscreen > button:first-of-type {
+      display: none !important;
+    }
+    
     /* 禁用模拟全屏时的滚动 */
     body.game-fullscreen {
       overflow: hidden !important;
@@ -771,26 +803,6 @@
       background-color: rgba(255, 255, 255, 0.95) !important;
     }
     
-    /* 确保原生全屏下按钮可见 - 特别针对桌面端 */
-    :fullscreen #extra-exit-fullscreen-btn,
-    :-webkit-full-screen #extra-exit-fullscreen-btn,
-    :-moz-full-screen #extra-exit-fullscreen-btn,
-    :-ms-fullscreen #extra-exit-fullscreen-btn {
-      display: flex !important;
-      z-index: 99999 !important;
-      position: fixed !important;
-      bottom: 20px !important;
-      right: 20px !important;
-    }
-    
-    /* 确保全屏时原按钮也可见 */
-    :fullscreen .fullscreen-exit,
-    :-webkit-full-screen .fullscreen-exit,
-    :-moz-full-screen .fullscreen-exit,
-    :-ms-fullscreen .fullscreen-exit {
-      display: block !important;
-    }
-    
     /* 横屏模式支持 */
     @media screen and (orientation: landscape) {
       #game-container.is-fullscreen {
@@ -829,6 +841,17 @@
         height: 100%;
       }
       
+      /* 模态框在竖屏模式下也需要旋转 */
+      #modal-content.is-fullscreen {
+        transform: rotate(90deg) !important;
+        transform-origin: bottom left !important;
+        width: 100vh !important; 
+        height: 100vw !important;
+        position: absolute !important;
+        top: -100vw !important;
+        left: 0 !important;
+      }
+      
       /* 竖屏模式下调整退出按钮位置 */
       #extra-exit-fullscreen-btn {
         transform: rotate(-90deg);
@@ -859,6 +882,26 @@
         width: 72px !important;
         height: 72px !important;
       }
+    }
+    
+    /* 确保原生全屏下按钮可见 - 特别针对桌面端 */
+    :fullscreen #extra-exit-fullscreen-btn,
+    :-webkit-full-screen #extra-exit-fullscreen-btn,
+    :-moz-full-screen #extra-exit-fullscreen-btn,
+    :-ms-fullscreen #extra-exit-fullscreen-btn {
+      display: flex !important;
+      z-index: 99999 !important;
+      position: fixed !important;
+      bottom: 20px !important;
+      right: 20px !important;
+    }
+    
+    /* 确保全屏时原按钮也可见 */
+    :fullscreen .fullscreen-exit,
+    :-webkit-full-screen .fullscreen-exit,
+    :-moz-full-screen .fullscreen-exit,
+    :-ms-fullscreen .fullscreen-exit {
+      display: block !important;
     }
   </style>
 </body>
