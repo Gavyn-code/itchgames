@@ -183,6 +183,7 @@
             frameborder="0"
             allow="autoplay; fullscreen"
             title="Game Content"
+            style="will-change: transform; transform: translateZ(0);"
           ></iframe>
           <button onclick="toggleFullscreen()" id="fullscreen-btn" class="absolute bottom-4 right-4 z-50 bg-white/80 rounded-full p-3 shadow-md hover:bg-white transition-all duration-300 w-12 h-12 flex items-center justify-center min-w-[44px] min-h-[44px]">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fullscreen-enter">
@@ -282,6 +283,12 @@
         } else {
           iframe.src = `https://cdn.games/${gameId}/index.html`;
         }
+        
+        // 确保iframe在加载后可见
+        iframe.onload = function() {
+          iframe.style.visibility = 'visible';
+          iframe.style.display = 'block';
+        };
       }, 300);
       
       // 添加动画效果
@@ -434,6 +441,15 @@
           document.body.classList.add('game-fullscreen');
           modalContent.classList.add('is-fullscreen');
           
+          // 明确设置游戏iframe可见
+          const gameFrame = document.getElementById('game-frame');
+          gameFrame.style.display = 'block';
+          gameFrame.style.visibility = 'visible';
+          gameFrame.style.zIndex = '10001';
+          gameFrame.style.position = 'absolute';
+          gameFrame.style.width = '100%';
+          gameFrame.style.height = '100%';
+          
           // 尝试锁定屏幕方向
           try {
             if (screen.orientation && screen.orientation.lock) {
@@ -514,10 +530,27 @@
       // 确保iframe可见并正确显示
       gameFrame.style.visibility = 'visible';
       gameFrame.style.display = 'block';
+      gameFrame.style.position = 'absolute';
+      gameFrame.style.top = '0';
+      gameFrame.style.left = '0';
+      gameFrame.style.right = '0';
+      gameFrame.style.bottom = '0';
+      gameFrame.style.width = '100%';
+      gameFrame.style.height = '100%';
+      gameFrame.style.zIndex = '10001';
       
       // 确保容器背景透明
       gameContainer.style.backgroundColor = 'transparent';
       modalContent.style.backgroundColor = 'transparent';
+      
+      // 强制重绘iframe
+      setTimeout(() => {
+        // 临时修改样式触发重绘
+        gameFrame.style.opacity = '0.99';
+        setTimeout(() => {
+          gameFrame.style.opacity = '1';
+        }, 50);
+      }, 50);
     }
     
     function exitFullscreen() {
@@ -616,6 +649,9 @@
     iframe {
       -webkit-transform: translateZ(0);
       transform: translateZ(0);
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
     
     /* 修复max-height计算 */
@@ -714,7 +750,7 @@
         width: 100vw;
         height: 100vh;
         border-radius: 0;
-        z-index: 10000;
+        z-index: 10001 !important;
         position: absolute;
         top: 0;
         left: 0;
@@ -846,17 +882,18 @@
       #game-container.is-fullscreen {
         transform: rotate(90deg);
         transform-origin: bottom left;
-        width: 100vh; /* 交换宽高 */
-        height: 100vw;
+        width: 100vh !important; /* 交换宽高 */
+        height: 100vw !important;
         position: absolute;
         top: -100vw;
         left: 0;
-        overflow: hidden;
+        overflow: visible;
+        z-index: 10000;
       }
       
       #game-container.is-fullscreen #game-frame {
-        width: 100%;
-        height: 100%;
+        width: 100% !important;
+        height: 100% !important;
         position: absolute;
         top: 0;
         left: 0;
@@ -864,6 +901,8 @@
         bottom: 0;
         visibility: visible !important;
         display: block !important;
+        z-index: 10001;
+        transform: none !important;
       }
       
       /* 模态框在竖屏模式下也需要旋转 */
@@ -900,6 +939,20 @@
         z-index: 10000;
       }
       
+      #game-container.is-fullscreen #game-frame {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        z-index: 10001 !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        visibility: visible !important;
+        display: block !important;
+      }
+      
       /* 强制iOS上的退出按钮可见 */
       #extra-exit-fullscreen-btn {
         position: fixed !important;
@@ -928,6 +981,12 @@
     :-moz-full-screen .fullscreen-exit,
     :-ms-fullscreen .fullscreen-exit {
       display: block !important;
+    }
+
+    /* 强制iframe内容可见 */
+    #game-frame {
+      visibility: visible !important;
+      z-index: 2;
     }
   </style>
 </body>
