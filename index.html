@@ -181,9 +181,12 @@
             loading="lazy"
             decoding="async"
             frameborder="0"
-            allow="autoplay; fullscreen"
+            allow="autoplay; fullscreen; accelerometer; gyroscope; payment"
+            allowfullscreen="true"
+            webkitallowfullscreen="true"
+            mozallowfullscreen="true"
             title="Game Content"
-            style="will-change: transform; transform: translateZ(0);"
+            style="will-change: transform; transform: translateZ(0); -webkit-transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden;"
           ></iframe>
           <button onclick="toggleFullscreen()" id="fullscreen-btn" class="absolute bottom-4 right-4 z-50 bg-white/80 rounded-full p-3 shadow-md hover:bg-white transition-all duration-300 w-12 h-12 flex items-center justify-center min-w-[44px] min-h-[44px]">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fullscreen-enter">
@@ -206,6 +209,12 @@
   </main>
 
   <script>
+    // iOS设备检测
+    function isIOSDevice() {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
+    
     // DOM加载完成后初始化
     document.addEventListener('DOMContentLoaded', function() {
       // 初始化暗黑模式检测
@@ -221,6 +230,18 @@
           document.body.classList.remove('dark-mode');
         }
       });
+      
+      // 如果是iOS设备，添加特殊类名
+      if (isIOSDevice()) {
+        document.body.classList.add('ios-device');
+      }
+      
+      // 阻止iOS上的橡皮筋效果
+      document.body.addEventListener('touchmove', function(e) {
+        if (document.body.classList.contains('game-fullscreen')) {
+          e.preventDefault();
+        }
+      }, { passive: false });
       
       // 初始化游戏分类过滤器
       filterGames('All');
@@ -450,6 +471,43 @@
           gameFrame.style.width = '100%';
           gameFrame.style.height = '100%';
           
+          // iOS特殊处理
+          const isIOS = isIOSDevice();
+          
+          if (isIOS) {
+            // 针对iOS的特殊修复
+            gameFrame.style.transform = 'none';
+            gameFrame.style.webkitTransform = 'none';
+            gameFrame.style.display = 'block !important';
+            gameFrame.style.backgroundColor = 'white';
+            
+            // 强制重绘
+            gameContainer.style.opacity = '0.99';
+            gameContainer.style.backgroundColor = 'white';
+            
+            setTimeout(() => {
+              gameContainer.style.opacity = '1';
+              
+              // 强制显示iframe (iOS特殊处理)
+              gameFrame.style.visibility = 'visible';
+              gameFrame.style.opacity = '1';
+              
+              // 尝试更改iframe src触发重新加载
+              const currentSrc = gameFrame.src;
+              if (currentSrc) {
+                // 备份当前src
+                const tempSrc = gameFrame.src;
+                
+                // 添加时间戳参数强制刷新
+                if (tempSrc.indexOf('?') > -1) {
+                  gameFrame.src = tempSrc + '&t=' + new Date().getTime();
+                } else {
+                  gameFrame.src = tempSrc + '?t=' + new Date().getTime();
+                }
+              }
+            }, 100);
+          }
+          
           // 尝试锁定屏幕方向
           try {
             if (screen.orientation && screen.orientation.lock) {
@@ -539,18 +597,41 @@
       gameFrame.style.height = '100%';
       gameFrame.style.zIndex = '10001';
       
-      // 确保容器背景透明
-      gameContainer.style.backgroundColor = 'transparent';
-      modalContent.style.backgroundColor = 'transparent';
+      // 确保容器背景为白色（解决透明背景问题）
+      gameContainer.style.backgroundColor = 'white';
+      modalContent.style.backgroundColor = 'white';
       
-      // 强制重绘iframe
-      setTimeout(() => {
-        // 临时修改样式触发重绘
-        gameFrame.style.opacity = '0.99';
+      // 检测iOS设备
+      const isIOS = isIOSDevice();
+      
+      if (isIOS) {
+        // iOS特殊处理
+        gameFrame.style.webkitTransform = 'none !important';
+        gameFrame.style.transform = 'none !important';
+        gameFrame.style.backgroundColor = 'white';
+        
+        // 手动触发iOS上的重绘
         setTimeout(() => {
-          gameFrame.style.opacity = '1';
+          const currentSrc = gameFrame.src;
+          if (currentSrc) {
+            // 添加时间戳触发刷新
+            if (currentSrc.indexOf('?') > -1) {
+              gameFrame.src = currentSrc + '&t=' + new Date().getTime();
+            } else {
+              gameFrame.src = currentSrc + '?t=' + new Date().getTime();
+            }
+          }
+        }, 100);
+      } else {
+        // 非iOS设备的强制重绘
+        setTimeout(() => {
+          // 临时修改样式触发重绘
+          gameFrame.style.opacity = '0.99';
+          setTimeout(() => {
+            gameFrame.style.opacity = '1';
+          }, 50);
         }, 50);
-      }, 50);
+      }
     }
     
     function exitFullscreen() {
@@ -937,20 +1018,43 @@
         right: 0;
         bottom: 0;
         z-index: 10000;
+        background-color: white !important; /* 使用白色背景而非透明 */
+        overflow: visible !important;
       }
       
       #game-container.is-fullscreen #game-frame {
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
         z-index: 10001 !important;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
         visibility: visible !important;
         display: block !important;
+        transform: none !important;
+        -webkit-transform: none !important;
+        opacity: 1 !important;
+        background-color: white !important;
+      }
+      
+      /* iOS竖屏强制处理 */
+      @media screen and (orientation: portrait) {
+        #game-container.is-fullscreen {
+          transform: rotate(90deg) !important;
+          transform-origin: bottom left !important;
+          width: 100vh !important;
+          height: 100vw !important;
+          top: -100vw !important;
+          left: 0 !important;
+        }
+        
+        #game-container.is-fullscreen #game-frame {
+          width: 100% !important;
+          height: 100% !important;
+        }
       }
       
       /* 强制iOS上的退出按钮可见 */
@@ -987,6 +1091,59 @@
     #game-frame {
       visibility: visible !important;
       z-index: 2;
+    }
+    
+    /* 专门为Apple设备增加的兼容性修复 */
+    @supports (-webkit-touch-callout: none) and (-webkit-appearance:none) { 
+      #game-container.is-fullscreen #game-frame {
+        width: 100% !important;
+        height: 100% !important;
+        transform: none !important;
+        -webkit-transform: none !important;
+        visibility: visible !important;
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        z-index: 10001 !important;
+        background-color: white !important;
+      }
+    }
+    
+    /* Safari 特殊修复 */
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+      #game-container.is-fullscreen {
+        background-color: white !important;
+      }
+      
+      #game-container.is-fullscreen #game-frame {
+        visibility: visible !important;
+        opacity: 1 !important;
+        background-color: white !important;
+        transform: none !important;
+        -webkit-transform: none !important;
+      }
+    }
+
+    /* iOS设备特定样式 */
+    body.ios-device #game-container.is-fullscreen {
+      background-color: white !important;
+      visibility: visible !important;
+      display: block !important;
+    }
+    
+    body.ios-device #game-container.is-fullscreen #game-frame {
+      background-color: white !important;
+      visibility: visible !important;
+      display: block !important;
+      position: absolute !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 10001 !important;
+      transform: none !important;
+      -webkit-transform: none !important;
     }
   </style>
 </body>
