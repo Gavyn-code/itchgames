@@ -505,9 +505,19 @@
     function useSimulatedFullscreen() {
       const gameContainer = document.getElementById('game-container');
       const modalContent = document.getElementById('modal-content');
+      const gameFrame = document.getElementById('game-frame');
+      
       gameContainer.classList.add('is-fullscreen');
       modalContent.classList.add('is-fullscreen');
       document.body.classList.add('game-fullscreen');
+      
+      // 确保iframe可见并正确显示
+      gameFrame.style.visibility = 'visible';
+      gameFrame.style.display = 'block';
+      
+      // 确保容器背景透明
+      gameContainer.style.backgroundColor = 'transparent';
+      modalContent.style.backgroundColor = 'transparent';
     }
     
     function exitFullscreen() {
@@ -697,27 +707,35 @@
         width: 100vw;
         height: 100vh;
         z-index: 10000;
-        background: black;
+        background: transparent;
       }
       
       #game-container.is-fullscreen #game-frame {
         width: 100vw;
         height: 100vh;
         border-radius: 0;
+        z-index: 10000;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        visibility: visible !important;
+        display: block !important;
       }
     }
     
     /* 手机端全屏模式增强 */
     #game-container.is-fullscreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 10000;
-      background-color: #000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 10000;
+        background-color: transparent;
     }
     
     #game-container.is-fullscreen #game-frame {
@@ -729,14 +747,14 @@
       left: 0;
       right: 0;
       bottom: 0;
-      z-index: 10000;
+      z-index: 10001;
     }
     
     /* 模态框全屏样式 */
     #modal-content.is-fullscreen {
       width: 100% !important;
       height: 100% !important;
-      background: black;
+      background: transparent !important;
       top: 0 !important;
       left: 0 !important;
       transform: none !important;
@@ -839,6 +857,13 @@
       #game-container.is-fullscreen #game-frame {
         width: 100%;
         height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        visibility: visible !important;
+        display: block !important;
       }
       
       /* 模态框在竖屏模式下也需要旋转 */
@@ -850,6 +875,7 @@
         position: absolute !important;
         top: -100vw !important;
         left: 0 !important;
+        background: transparent !important;
       }
       
       /* 竖屏模式下调整退出按钮位置 */
